@@ -83,6 +83,12 @@
 					$stmt2 = $conn->query($stmt);
 					$stmt3 = $stmt2->fetch_assoc();
 					$time_in_last = $stmt3['time_in'];
+
+					$stmt = "select * from attendance where employee_id='$id' and date='$date_now' and time_in='$time_in_last' ";
+					$data = $conn->query($stmt);
+					$value = $data->fetch_assoc();
+					$emp_id = $value['employee_id'];
+					
 					
 					//$time_in_last = '09:34:35';
 					$sql = "UPDATE attendance SET time_out = NOW() WHERE employee_id='$id' and time_in='$time_in_last' ";
@@ -91,14 +97,16 @@
 						if($row['time_out'] != '00:00:00'){
 							$output['message'] = 'Time out: '.$row['firstname'].' '.$row['lastname'];
 
-							$sql = "SELECT * FROM attendance WHERE id = '".$row['uid']."'";
+							//$sql = "SELECT * FROM attendance WHERE employee_id='$id' and time_in='$time_in_last' ";
+
+							$sql = "SELECT * FROM attendance WHERE employee_id = '$emp_id' and time_in='$time_in_last' ";
 							$query = $conn->query($sql);
 							$urow = $query->fetch_assoc();
 
 							$time_in = $urow['time_in'];
 							$time_out = $urow['time_out'];
 
-							$sql = "SELECT * FROM employees LEFT JOIN schedules ON schedules.id=employees.schedule_id WHERE employees.id = '$id'";
+							/*$sql = "SELECT * FROM employees LEFT JOIN schedules ON schedules.id=employees.schedule_id WHERE employees.id = '$id'";
 							$query = $conn->query($sql);
 							$srow = $query->fetch_assoc();
 
@@ -109,7 +117,7 @@
 							if($srow['time_out'] < $urow['time_in']){
 								$time_out = $srow['time_out'];
 							}
-
+*/
 							$time_in = new DateTime($time_in);
 							$time_out = new DateTime($time_out);
 							$interval = $time_in->diff($time_out);
@@ -121,7 +129,7 @@
 								$int = $int - 1;
 							}
 
-							$sql = "UPDATE attendance SET num_hr = '$int' WHERE id = '".$row['uid']."'";
+							$sql = "UPDATE attendance SET num_hr = '$int' WHERE employee_id='$id' and time_in='$time_in_last' ";
 							//$sql = "UPDATE attendance SET SET num_hr = '$int' WHERE employee_id='$id' and time_in='$time_in_last' ";
 
 							$conn->query($sql);
