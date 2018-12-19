@@ -94,8 +94,8 @@
 					$sql = "UPDATE attendance SET time_out = NOW() WHERE employee_id='$id' and time_in='$time_in_last' ";
 
 						$conn->query($sql);
-						if($row['time_out'] != '00:00:00'){
-							$output['message'] = 'Time out: '.$row['firstname'].' '.$row['lastname'];
+						/*if($row['time_out'] != '00:00:00'){
+							$output['message'] = 'Time out: '.$row['firstname'].' '.$row['lastname'];*/
 
 							//$sql = "SELECT * FROM attendance WHERE employee_id='$id' and time_in='$time_in_last' ";
 
@@ -133,6 +133,9 @@
 							//$sql = "UPDATE attendance SET SET num_hr = '$int' WHERE employee_id='$id' and time_in='$time_in_last' ";
 
 							$conn->query($sql);
+							
+							if($urow['time_out'] != '00:00:00'){
+								$output['message'] = 'Time out: '.$row['firstname'].' '.$row['lastname'];
 						}
 						else{
 							$output['error'] = true;

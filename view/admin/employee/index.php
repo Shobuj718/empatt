@@ -98,14 +98,25 @@ die();*/
                           <td><?php echo $row['description']; ?></td>
                           <td><?php echo date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out'])); ?></td>
                           <td><?php echo date('M d, Y', strtotime($row['created_on'])) ?></td>
+                        <?php  
+                          if($_SESSION['type'] == 'administrator'){
+                        ?>
                           <td>
                             <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $row['empid']; ?>"><i class="fa fa-edit"></i> Edit</button>
 
                             <button class="btn btn-danger btn-sm delete btn-flat" data-id="<?php echo $row['empid']; ?>"><i class="fa fa-trash"></i> Delete</button>
                           </td>
+                        <?php } else { ?>
+                          <td>
+                            <button class="btn btn-success btn-sm  btn-flat" data-id="<?php echo $row['empid']; ?>"><i class="fa fa-edit"></i> Not Allow</button>
+
+                            <button class="btn btn-danger btn-sm  btn-flat" data-id="<?php echo $row['empid']; ?>"><i class="fa fa-trash"></i> Not Allow</button>
+                          </td>
+                       
+
                         </tr>
                       <?php
-                    }
+                    } }
                   ?>
                 </tbody>
               </table>

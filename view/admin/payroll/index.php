@@ -9,18 +9,6 @@ $employee = new Employee();
 
 $data = $employee->show_attend_leave_time();
 
-/*$date_now = date('Y-m-d');
-$id = '5';
-
-  $stmt = "select * from attendance where employee_id='$id' and date='$date_now' order by time_in DESC limit 2 ";
-        $stmt_data = $employee->time_in_last($stmt);
-        $time_in_last = $stmt_data['time_in'];
-        echo $time_in_last;
-
-        $sql = "UPDATE attendance SET time_out = NOW() WHERE id = '$id' and time_in='$time_in_last' ";
-        $stmt_ta = $employee->time_in_last($sql);
-
-*/
 ?>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -34,7 +22,7 @@ $id = '5';
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Attendance
+        Employee Working hour and amount details
        
       </h1>
       <ol class="breadcrumb">
@@ -88,6 +76,7 @@ $id = '5';
                   <th>Time In</th>
                   <th>Time Out</th>
                   <th>Total Hour</th>
+                  <th>Total Amount</th>
                   <th>Action</th>
                 </thead>
                 <tbody>
@@ -98,6 +87,7 @@ $id = '5';
                       foreach($data as $row){
                       $status = ($row['status']==1)?'<span class="label label-warning pull-right">ontime</span>':'<span class="label label-danger pull-right">late</span>';
                       //if($row['status'] ==)
+                      $data = $row['num_hr'];
                       echo "
                         <tr>
                           <td class='hidden'></td>
@@ -107,6 +97,7 @@ $id = '5';
                           <td>".date('h:i A', strtotime($row['time_in'])).$status."</td>
                           <td>".date('h:i A', strtotime($row['time_out']))."</td>
                           <td>".$row['num_hr']."</td>
+                          <td>".number_format($data * 10, 2)."</td>
                           ";
                            
                           ?>
@@ -115,15 +106,13 @@ $id = '5';
                           if($_SESSION['type'] == 'administrator'){
                       ?>
                           <td>
-                            <button class='btn btn-success btn-sm btn-flat edit' data-id='".$row['attid']."'><i class='fa fa-edit'></i> Edit</button>
-                            <button class='btn btn-danger btn-sm btn-flat delete' data-id='".$row['attid']."'><i class='fa fa-trash'></i> Delete</button>
+                            <a class='btn btn-success btn-sm btn-flat' href="view/admin/payroll/payslip.php?pay=<?php echo $row['employee_id']; ?>" target="_blank"  >Single pay slip</a>
                           </td>
 
                           <?php } else { ?>
 
                              <td>
-                            <button class='btn btn-success btn-sm btn-flat edit' ><i class='fa fa-edit'></i> Not Allow</button>
-                            <button class='btn btn-danger btn-sm btn-flat delete' ><i class='fa fa-trash'></i> Not Allow</button>
+                            <button class='btn btn-success btn-sm btn-flat edit' ><i class='fa fa-edit'></i> Single pay slip</button>
                           </td>
                         </tr>
                     <?php } }  ?>
@@ -176,3 +165,63 @@ function getRow(id){
   });
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<?php
+// Load autoloader (using Composer)
+
+/*
+include_once '../../../vendor/autoload.php';
+
+$from_title = date('M d, Y');
+$to_title = date('M d, Y');
+$money = 56.23654;
+
+$pdf = new TCPDF();                 
+$pdf->AddPage();                    // pretty self-explanatory
+$content = '';  
+    $content .= '
+      <h2 align="center">Ehsan Software Employee Salary Info</h2>
+      	<h4 align="center">'.$from_title." - ".$to_title.'</h4>
+      	<table border="1" cellspacing="0" cellpadding="3">  
+           <tr>  
+           		<th width="30%" align="center"><b>Employee Name</b></th>
+                <th width="30%" align="center"><b>Employee ID</b></th>
+				<th width="20%" align="center"><b>Total Hour</b></th> 
+				<th width="20%" align="center"><b>Total Money</b></th> 
+           </tr>  
+           <tr>  
+           		<td width="30%" align="center">Shobuj Mia</td>
+                <td width="30%" align="center">171101</td>
+				<td width="20%" align="center">3 Hours</td> 
+				<td width="20%" align="center">1000 tk.</td> 
+           </tr>
+           <tr>  
+           		<td width="30%" align="center">Shohel Rana</td>
+                <td width="30%" align="center">171101</td>
+				<td width="20%" align="center">3 Hours</td> 
+				<td width="20%" align="center">1000 tk.</td> 
+           </tr>  
+      
+			<tr>
+				<td colspan="2" align="right"><b>Total</b></td>
+				<td align="right"><b>'.number_format($money, 3)." hours ".'</b></td>
+				<td align="right"><b>'.number_format($money, 2)." tk. ".'</b></td>
+			</tr>
+			
+		';
+    $content .= '</table>';  
+    $pdf->writeHTML($content);  
+$pdf->Output('hello_world.pdf');    // send the file inline to the browser (default).
+
+
+*/
+?>

@@ -40,7 +40,7 @@ class Login extends Connection
 					$_SESSION['username'] = $row['username'];
 					$_SESSION['password'] = $row['password'];
 					$_SESSION['admin']    = $row['id'];
-					$_SESSION['type']     = $row['administrattor'];
+					$_SESSION['type']     = $row['type'];
 
 					header('location: http://localhost/empattend/view/admin/index.php');
 				}

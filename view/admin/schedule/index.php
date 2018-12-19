@@ -1,11 +1,11 @@
 <?php 
-	include_once '../includes/header.php';
-	include_once '../../../vendor/autoload.php';
+  include_once '../includes/header.php';
+  include_once '../../../vendor/autoload.php';
 
-	use App\Admin\Schedule\Schedule;
+  use App\Admin\Schedule\Schedule;
 
-	$schedule = new Schedule();
-	$data = $schedule->show_schedule();
+  $schedule = new Schedule();
+  $data = $schedule->show_schedule();
 
  ?>
 
@@ -50,33 +50,51 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border">
+              <?php  
+                if($_SESSION['type'] == 'administrator'){
+            ?>
               <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New</a>
+              <?php } else { ?>
+                <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> Not Allow</a>
+                <?php } ?>
             </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
                   <th>Time In</th>
                   <th>Time Out</th>
-                  <th>Tools</th>
+                  <th>Action</th>
                 </thead>
                 <tbody>
                   <?php
                    /* $sql = "SELECT * FROM schedules";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){*/
-                    	foreach($data as $row){
+                      foreach($data as $row){
                       echo "
                         <tr>
                           <td>".date('h:i A', strtotime($row['time_in']))."</td>
                           <td>".date('h:i A', strtotime($row['time_out']))."</td>
+                         ";
+                           
+                          ?>
+
+                        <?php  
+                          if($_SESSION['type'] == 'administrator'){
+                      ?>
                           <td>
-                            <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id']."'><i class='fa fa-edit'></i> Edit</button>
-                            <button class='btn btn-danger btn-sm delete btn-flat' data-id='".$row['id']."'><i class='fa fa-trash'></i> Delete</button>
+                            <button class='btn btn-success btn-sm btn-flat edit' data-id='".$row['attid']."'><i class='fa fa-edit'></i> Edit</button>
+                            <button class='btn btn-danger btn-sm btn-flat delete' data-id='".$row['attid']."'><i class='fa fa-trash'></i> Delete</button>
+                          </td>
+
+                          <?php } else { ?>
+
+                             <td>
+                            <button class='btn btn-success btn-sm btn-flat edit' ><i class='fa fa-edit'></i> Not Allow</button>
+                            <button class='btn btn-danger btn-sm btn-flat delete' ><i class='fa fa-trash'></i> Not Allow</button>
                           </td>
                         </tr>
-                      ";
-                    }
-                  ?>
+                    <?php } }  ?>
                 </tbody>
               </table>
             </div>

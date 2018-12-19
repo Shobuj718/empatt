@@ -1,3 +1,4 @@
 *.idea/*
 assets/*
 vendor/*
+composer.lock
