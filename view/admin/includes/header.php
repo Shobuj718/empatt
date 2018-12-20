@@ -278,8 +278,11 @@
             <li><a href="view/admin/schedule/index.php"><i class="fa fa-circle-o"></i> Schedules</a></li>
           </ul>
         </li>
-        <!-- <li><a href="deduction.php"><i class="fa fa-file-text"></i> Deductions</a></li>
-        <li><a href="position.php"><i class="fa fa-suitcase"></i> Positions</a></li>-->
+        <!-- 
+        <li><a href="deduction.php"><i class="fa fa-file-text"></i> Deductions</a></li>
+        -->
+
+        <li><a href="view/admin/position/index.php"><i class="fa fa-suitcase"></i> Positions</a></li>
         <li class="header">PRINTABLES</li>
         <li class="treeview">
           <a href="#">

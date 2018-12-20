@@ -101,8 +101,15 @@ include_once '../includes/header.php';
                     $total = 0;
                     while($row = $query->fetch_assoc()){
                         
-                      if($row['employee'] == 171101){
-                          $rate = 10;
+                        $id = $row['employee'];
+                        $sql2 = "select * from position where employee_id='$id'";
+                        $data = $conn->query($sql2);
+                        $data = $data->fetch_assoc();
+                        $rate = $data['rate'];
+                        
+                      /*if($row['employee'] == 171101){
+                        
+                        $rate = 10;
                       }elseif($row['employee'] == 181102){
                           $rate = 20;
                       }elseif($row['employee'] == 181103){
@@ -111,7 +118,7 @@ include_once '../includes/header.php';
                           $rate = 40;
                       }else{
                           $rate = 100;
-                      }
+                      }*/
 
 
                       $gross = $rate * $row['total_hr'];

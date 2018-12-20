@@ -48,6 +48,19 @@ class Employee extends Connection
 		if(array_key_exists('image', $data)){
 			$this->image = $data['image'];
 		}
+		if(array_key_exists('name', $data)){
+			$this->name = $data['name'];
+		}
+		if(array_key_exists('description', $data)){
+			$this->description = $data['description'];
+		}
+		if(array_key_exists('rate', $data)){
+			$this->rate = $data['rate'];
+		}
+		if(array_key_exists('employee_id', $data)){
+			$this->employee_id = $data['employee_id'];
+		}
+
 
 		return $this;
 	}
@@ -89,11 +102,51 @@ class Employee extends Connection
 		}
 	}
 
+
+
+	//insert position data 
+	public function insert_position(){
+		try {
+
+			$stmt = $this->con->prepare("insert into position(name, employee_id, description, rate ) values(:name, :employee_id, :description, :rate ) ");
+
+			$stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+			$stmt->bindValue(':employee_id', $this->employee_id);
+			$stmt->bindValue(':description', $this->description, PDO::PARAM_STR);
+			$stmt->bindValue(':rate', $this->rate);
+			$stmt->execute();
+
+			if($stmt){
+				$_SESSION['success'] = "Position insert Successfully";
+				echo "<script>window.location='index.php'</script>";
+			}
+			
+		} catch (PDOException $e) {
+			echo "Error: ".$e->getMessage."<br>";
+			die();
+		}
+	}
+
+
 	//edit employee
 	public function edit_employee($id){
 		try {
 
 			$stmt = $this->con->prepare("SELECT *, employees.id as empid FROM employees LEFT JOIN position ON position.id=employees.position_id LEFT JOIN schedules ON schedules.id=employees.schedule_id WHERE employees.id = '$id'");
+			$stmt->execute();
+			return $stmt->fetch(PDO::FETCH_ASSOC);
+			//echo json_encode($stmt);
+			
+		} catch (PDOException $e) {
+			echo "Error: ".$e->getMessage()."<br>";
+			die();
+		}
+	}
+	//edit position
+	public function edit_position($id){
+		try {
+
+			$stmt = $this->con->prepare("SELECT * FROM position WHERE id = '$id'");
 			$stmt->execute();
 			return $stmt->fetch(PDO::FETCH_ASSOC);
 			//echo json_encode($stmt);
@@ -133,6 +186,37 @@ class Employee extends Connection
 			if($stmt){
 				$_SESSION['success'] = "Employee Updated Successfully";
 				echo "<script>window.location='index.php'</script>";
+			}
+			
+		} catch (PDOException $e) {
+			echo "Error: ".$e->getMessage()."<br>";
+			die();
+		}
+	}
+//update position
+	public function position_update(){
+		try {
+
+			$stmt = $this->con->prepare("update position set 
+				name=:name,
+				description=:description,
+				rate=:rate,
+				employee_id=:employee_id
+				where id=:id
+				");
+			$stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+			$stmt->bindValue(':description', $this->description, PDO::PARAM_STR);
+			$stmt->bindValue(':rate', $this->rate, PDO::PARAM_STR);
+			$stmt->bindValue(':employee_id', $this->employee_id, PDO::PARAM_STR);
+			$stmt->bindValue(':id', $this->id, PDO::PARAM_STR);
+			$stmt->execute();
+
+			if($stmt){
+				$_SESSION['success'] = "Position Updated Successfully";
+				echo "<script>window.location='index.php'</script>";
+			}
+			else{
+				$_SESSION['error'] = "Error Occured ";
 			}
 			
 		} catch (PDOException $e) {
@@ -228,7 +312,7 @@ class Employee extends Connection
 	public function employeeList(){
 		try {
 
-			$stmt = $this->con->prepare("SELECT *, employees.id AS empid FROM employees LEFT JOIN position ON position.id=employees.position_id LEFT JOIN schedules ON schedules.id=employees.schedule_id where delete_status=1 ");
+			$stmt = $this->con->prepare("SELECT *, employees.id AS empid, employees.employee_id as employee_id FROM employees LEFT JOIN position ON position.id=employees.position_id LEFT JOIN schedules ON schedules.id=employees.schedule_id where delete_status=1 ");
 			$stmt->execute();
 			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 			
